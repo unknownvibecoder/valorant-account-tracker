@@ -1,47 +1,57 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Shield, Activity } from 'lucide-react';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
-  },
-});
+import { useState } from 'react';
+import { SearchForm } from './components/SearchForm';
+import { PlayerProfileCard } from './components/PlayerProfileCard';
+import { fetchPlayerProfile } from './services/playerService';
+import { PlayerProfile } from './types/player';
 
 export default function App() {
+  const [profile, setProfile] = useState<PlayerProfile | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSearch = async (name: string, tag: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchPlayerProfile(name, tag);
+      setProfile(data);
+    } catch (err: any) {
+      setProfile(null);
+      setError(err.response?.data?.error || err.message || 'Không tìm thấy người chơi này.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
-        <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Shield className="w-8 h-8 text-rose-500" />
-              <span className="font-bold text-xl tracking-wider text-slate-100">
-                VALORANT<span className="text-rose-500">TRACKER</span>
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20">
-              <Activity className="w-3.5 h-3.5" />
-              <span>Phase 1 Scaffolding Ready</span>
-            </div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between p-4 sm:p-8 font-sans selection:bg-red-500 selection:text-white">
+      {/* Header */}
+      <header className="max-w-4xl mx-auto w-full text-center py-8">
+        <h1 className="text-4xl sm:text-5xl font-black tracking-wider bg-gradient-to-r from-red-500 via-rose-400 to-amber-500 bg-clip-text text-transparent uppercase">
+          VALORANT TRACKER
+        </h1>
+        <p className="text-slate-400 mt-2 text-sm sm:text-base">
+          Tra cứu thứ hạng, chỉ số và hồ sơ người chơi kịch tính
+        </p>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto w-full space-y-8 my-auto">
+        <SearchForm onSearch={handleSearch} isLoading={loading} />
+
+        {error && (
+          <div className="max-w-2xl mx-auto bg-red-950/40 border border-red-800/60 text-red-300 px-4 py-3 rounded-xl text-center text-sm shadow-lg">
+            {error}
           </div>
-        </header>
+        )}
 
-        <main className="max-w-7xl mx-auto px-4 py-12 flex-1 flex flex-col items-center justify-center text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
-            Production Foundation <span className="text-rose-500">Initialized</span>
-          </h1>
-          <p className="text-slate-400 max-w-2xl text-lg mb-8">
-            The multi-tier backend proxy architecture and dark-mode gaming layout are established and configured for future developer or AI agent extensions.
-          </p>
-        </main>
+        {profile && <PlayerProfileCard profile={profile} />}
+      </main>
 
-        <footer className="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-          © 2026 VALORANT Tracker Project. Strictly compliant with Riot Games API policies.
-        </footer>
-      </div>
-    </QueryClientProvider>
+      {/* Footer */}
+      <footer className="text-center text-xs text-slate-600 py-6">
+        Valorant Account Tracker &copy; {new Date().getFullYear()} — Powered by HenrikDev API
+      </footer>
+    </div>
   );
 }
