@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "VALORANT TRACKER",
+    "subtitle": "查詢段位、對戰歷史與表現分析"
+  },
+  "search": {
+    "placeholder_name": "Riot ID (例如: TenZ)",
+    "placeholder_tag": "標籤 (#5605)",
+    "button": "搜尋",
+    "loading": "載入中..."
+  },
+  "profile": {
+    "level": "等級",
+    "rank": "當前段位",
+    "elo": "Elo 分數",
+    "no_rank": "未排位",
+    "region": "地區"
+  },
+  "stats": {
+    "win_rate": "勝率 (近5場)",
+    "avg_kd": "平均 K/D",
+    "headshot_pct": "爆頭率",
+    "kd_trend": "📈 近5場 K/D 趨勢",
+    "recent_matches": "🎮 近期對戰",
+    "victory": "勝利",
+    "defeat": "戰敗",
+    "draw": "平局"
+  },
+  "errors": {
+    "not_found": "找不到該玩家。",
+    "api_error": "連接系統時發生錯誤。"
+  }
+}

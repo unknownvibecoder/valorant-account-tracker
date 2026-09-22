@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "VALORANT TRACKER",
+    "subtitle": "Tra cứu thứ hạng, lịch sử trận đấu và phân tích phong độ"
+  },
+  "search": {
+    "placeholder_name": "Riot ID (Ví dụ: TenZ)",
+    "placeholder_tag": "Tagline (#5605)",
+    "button": "Tra cứu",
+    "loading": "Đang tải..."
+  },
+  "profile": {
+    "level": "Cấp độ",
+    "rank": "Xếp hạng hiện tại",
+    "elo": "Điểm Elo",
+    "no_rank": "Chưa xếp hạng",
+    "region": "Khu vực"
+  },
+  "stats": {
+    "win_rate": "Tỷ lệ thắng (5 trận)",
+    "avg_kd": "K/D Trung bình",
+    "headshot_pct": "Tỷ lệ Headshot",
+    "kd_trend": "📈 Phong độ K/D 5 trận gần nhất",
+    "recent_matches": "🎮 Trận đấu gần đây",
+    "victory": "Thắng",
+    "defeat": "Thua",
+    "draw": "Hòa"
+  },
+  "errors": {
+    "not_found": "Không tìm thấy người chơi này.",
+    "api_error": "Có lỗi xảy ra khi kết nối hệ thống."
+  }
+}

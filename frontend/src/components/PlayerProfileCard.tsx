@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { PlayerProfile } from '../types/player';
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export const PlayerProfileCard: React.FC<Props> = ({ profile }) => {
+  const { t } = useTranslation();
   const { account, mmr } = profile;
 
   return (
@@ -37,7 +39,9 @@ export const PlayerProfileCard: React.FC<Props> = ({ profile }) => {
           <h2 className="text-2xl font-bold text-white tracking-wide">
             {account.name} <span className="text-slate-400 font-normal">#{account.tag}</span>
           </h2>
-          <p className="text-sm text-slate-400 uppercase tracking-widest mt-1">Khu vực: {account.region}</p>
+          <p className="text-sm text-slate-400 uppercase tracking-widest mt-1">
+            {t('profile.region')}: {account.region}
+          </p>
         </div>
 
         {/* Rank Badge */}

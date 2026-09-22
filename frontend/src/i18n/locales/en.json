@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "VALORANT TRACKER",
+    "subtitle": "Track rank, match history, and performance analytics"
+  },
+  "search": {
+    "placeholder_name": "Riot ID (e.g. TenZ)",
+    "placeholder_tag": "Tagline (#5605)",
+    "button": "Search",
+    "loading": "Loading..."
+  },
+  "profile": {
+    "level": "Level",
+    "rank": "Current Rank",
+    "elo": "Elo Rating",
+    "no_rank": "Unranked",
+    "region": "Region"
+  },
+  "stats": {
+    "win_rate": "Win Rate (Last 5 Games)",
+    "avg_kd": "Avg K/D",
+    "headshot_pct": "Headshot %",
+    "kd_trend": "📈 K/D Performance (Last 5 Games)",
+    "recent_matches": "🎮 Recent Matches",
+    "victory": "Victory",
+    "defeat": "Defeat",
+    "draw": "Draw"
+  },
+  "errors": {
+    "not_found": "Player not found.",
+    "api_error": "An error occurred while connecting to the system."
+  }
+}
