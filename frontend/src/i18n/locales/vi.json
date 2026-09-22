@@ -7,7 +7,9 @@
     "placeholder_name": "Riot ID (Ví dụ: TenZ)",
     "placeholder_tag": "Tagline (#5605)",
     "button": "Tra cứu",
-    "loading": "Đang tải..."
+    "loading": "Đang tải...",
+    "recent_searches": "Lịch sử tìm kiếm",
+    "clear_history": "Xóa tất cả"
   },
   "profile": {
     "level": "Cấp độ",

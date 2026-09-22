@@ -7,7 +7,9 @@
     "placeholder_name": "Riot ID (e.g. TenZ)",
     "placeholder_tag": "Tagline (#5605)",
     "button": "Search",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "recent_searches": "Recent Searches",
+    "clear_history": "Clear All"
   },
   "profile": {
     "level": "Level",

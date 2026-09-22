@@ -7,7 +7,9 @@
     "placeholder_name": "Riot ID (例如: TenZ)",
     "placeholder_tag": "標籤 (#5605)",
     "button": "搜尋",
-    "loading": "載入中..."
+    "loading": "載入中...",
+    "recent_searches": "最近搜尋",
+    "clear_history": "清除全部"
   },
   "profile": {
     "level": "等級",
