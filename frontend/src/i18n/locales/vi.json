@@ -31,5 +31,24 @@
   "errors": {
     "not_found": "Không tìm thấy người chơi này.",
     "api_error": "Có lỗi xảy ra khi kết nối hệ thống."
+  },
+  "auth": {
+    "sign_in": "Đăng nhập",
+    "sign_up": "Đăng ký",
+    "sign_in_title": "Đăng nhập vào Valorant Tracker",
+    "sign_up_title": "Tạo tài khoản Valorant Tracker",
+    "email_or_username": "Tên đăng nhập hoặc Email",
+    "username": "Tên đăng nhập",
+    "email": "Địa chỉ Email",
+    "password": "Mật khẩu",
+    "forgot_password": "Quên mật khẩu?",
+    "or": "hoặc",
+    "continue_google": "Tiếp tục với Google",
+    "continue_discord": "Tiếp tục với Discord",
+    "continue_facebook": "Tiếp tục với Facebook",
+    "new_to_app": "Mới dùng Valorant Tracker?",
+    "create_account": "Tạo tài khoản ngay",
+    "already_have_account": "Đã có tài khoản?",
+    "sign_in_now": "Đăng nhập"
   }
 }

@@ -31,5 +31,24 @@
   "errors": {
     "not_found": "找不到該玩家。",
     "api_error": "連接系統時發生錯誤。"
+  },
+  "auth": {
+    "sign_in": "登入",
+    "sign_up": "註冊",
+    "sign_in_title": "登入 Valorant Tracker",
+    "sign_up_title": "建立 Valorant Tracker 帳戶",
+    "email_or_username": "使用者名稱或電子郵件",
+    "username": "使用者名稱",
+    "email": "電子郵件地址",
+    "password": "密碼",
+    "forgot_password": "忘記密碼？",
+    "or": "或",
+    "continue_google": "使用 Google 帳號繼續",
+    "continue_discord": "使用 Discord 帳號繼續",
+    "continue_facebook": "使用 Facebook 帳號繼續",
+    "new_to_app": "第一次使用 Valorant Tracker？",
+    "create_account": "建立帳戶",
+    "already_have_account": "已經有帳戶？",
+    "sign_in_now": "登入"
   }
 }

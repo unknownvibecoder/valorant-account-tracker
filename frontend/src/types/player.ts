@@ -20,10 +20,6 @@ export interface ValorantMMR {
   };
 }
 
-export interface PlayerProfile {
-  account: ValorantAccount;
-  mmr?: ValorantMMR;
-}
 export interface PlayerMatchStats {
   match_id: string;
   map: string;
@@ -38,6 +34,12 @@ export interface PlayerMatchStats {
   result: 'Victory' | 'Defeat' | 'Draw';
   score: string;
   date: string;
+}
+
+export interface PlayerProfile {
+  account: ValorantAccount;
+  mmr?: ValorantMMR;
+  matches?: PlayerMatchStats[]; // Bổ sung thuộc tính này để ghép lịch sử trận đấu vào hồ sơ
 }
 
 export interface MatchHistoryData {

@@ -1,67 +1,117 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { AuthModal } from './components/AuthModal';
 import { SearchForm } from './components/SearchForm';
 import { PlayerProfileCard } from './components/PlayerProfileCard';
 import { MatchHistory } from './components/MatchHistory';
-import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { fetchPlayerProfile, fetchPlayerMatches } from './services/playerService';
+import { PlayerProfile } from './types/player';
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
-  const [searchTarget, setSearchTarget] = useState<{ name: string; tag: string } | null>(null);
+  const [profile, setProfile] = useState<PlayerProfile | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
 
-  const profileQuery = useQuery({
-    queryKey: ['playerProfile', searchTarget],
-    queryFn: () => fetchPlayerProfile(searchTarget!.name, searchTarget!.tag),
-    enabled: !!searchTarget,
-  });
+  const handleSearch = async (name: string, tag: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // 1. Tải thông tin hồ sơ người chơi
+      const profileData = await fetchPlayerProfile(name, tag);
 
-  const matchesQuery = useQuery({
-    queryKey: ['playerMatches', searchTarget],
-    queryFn: () => fetchPlayerMatches(searchTarget!.name, searchTarget!.tag),
-    enabled: !!searchTarget,
-  });
+      // 2. Tải lịch sử trận đấu và gắn vào hồ sơ
+      try {
+        const matchData = await fetchPlayerMatches(name, tag);
+        if (matchData && matchData.matches) {
+          profileData.matches = matchData.matches;
+        }
+      } catch (matchErr) {
+        console.warn('Không thể tải lịch sử trận đấu:', matchErr);
+      }
 
-  const handleSearch = (name: string, tag: string) => {
-    setSearchTarget({ name, tag });
+      setProfile(profileData);
+    } catch (err: unknown) {
+      console.error(err);
+      setError(t('errors.api_error'));
+      setProfile(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between p-4 sm:p-8 font-sans selection:bg-red-500 selection:text-white">
-      {/* Top Bar with Language Switcher */}
-      <div className="max-w-4xl mx-auto w-full flex justify-end">
-        <LanguageSwitcher />
-      </div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      {/* Header Navigation Bar */}
+      <header className="w-full border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black text-white text-lg">
+              V
+            </div>
+            <span className="font-bold text-lg tracking-wider text-white hidden sm:inline">
+              {t('header.title')}
+            </span>
+          </div>
 
-      {/* Header */}
-      <header className="max-w-4xl mx-auto w-full text-center py-6">
-        <h1 className="text-4xl sm:text-5xl font-black tracking-wider bg-gradient-to-r from-red-500 via-rose-400 to-amber-500 bg-clip-text text-transparent uppercase">
-          {t('header.title')}
-        </h1>
-        <p className="text-slate-400 mt-2 text-sm sm:text-base">
-          {t('header.subtitle')}
-        </p>
+          <div className="flex items-center space-x-3">
+            <LanguageSwitcher />
+            {/* Nút Sign In đã được sửa lỗi viền outline / focus */}
+            <button
+              onClick={(e) => {
+                e.currentTarget.blur();
+                setIsAuthOpen(true);
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs px-3.5 py-2 rounded-lg transition-all shadow-md shadow-red-950/40 outline-none focus:outline-none focus:ring-0"
+            >
+              {t('auth.sign_in')}
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto w-full space-y-8 my-auto flex flex-col items-center">
-        <SearchForm onSearch={handleSearch} isLoading={profileQuery.isLoading || matchesQuery.isLoading} />
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-10 space-y-8">
+        {/* Title Section */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight uppercase">
+            {t('header.title')}
+          </h1>
+          <p className="text-slate-400 text-sm sm:text-base max-w-md mx-auto">
+            {t('header.subtitle')}
+          </p>
+        </div>
 
-        {(profileQuery.isError || matchesQuery.isError) && (
-          <div className="max-w-2xl w-full bg-red-950/40 border border-red-800/60 text-red-300 px-4 py-3 rounded-xl text-center text-sm shadow-lg">
-            {(profileQuery.error as Error)?.message || (matchesQuery.error as Error)?.message || t('errors.not_found')}
+        {/* Search Input & Recent Searches */}
+        <SearchForm onSearch={handleSearch} isLoading={isLoading} />
+
+        {/* Error Notification */}
+        {error && (
+          <div className="max-w-xl mx-auto bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl text-center text-sm">
+            {error}
           </div>
         )}
 
-        {profileQuery.data && <PlayerProfileCard profile={profileQuery.data} />}
-        {matchesQuery.data && <MatchHistory data={matchesQuery.data} />}
+        {/* Profile & Match History Results */}
+        {profile && (
+          <div className="space-y-8">
+            <PlayerProfileCard profile={profile} />
+            {profile.matches && profile.matches.length > 0 && (
+              <MatchHistory matches={profile.matches} />
+            )}
+          </div>
+        )}
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-slate-600 py-6">
-        Valorant Account Tracker &copy; {new Date().getFullYear()} — Powered by HenrikDev API
+      <footer className="border-t border-slate-900 py-6 text-center text-xs text-slate-600">
+        Valorant Account Tracker © 2026 — Powered by HenrikDev API
       </footer>
+
+      {/* Login & Signup Modal */}
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </div>
   );
 };

@@ -31,5 +31,24 @@
   "errors": {
     "not_found": "Player not found.",
     "api_error": "An error occurred while connecting to the system."
+  },
+  "auth":{
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "sign_in_title": "Sign in to Valorant Tracker",
+    "sign_up_title": "Create your Valorant Tracker account",
+    "email_or_username": "Username or email address",
+    "username": "Username",
+    "email": "Email address",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "or": "or",
+    "continue_google": "Continue with Google",
+    "continue_discord": "Continue with Discord",
+    "continue_facebook": "Continue with Facebook",
+    "new_to_app": "New to Valorant Tracker?",
+    "create_account": "Create an account",
+    "already_have_account": "Already have an account?",
+    "sign_in_now": "Sign in"
   }
 }

@@ -1,18 +1,36 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MatchHistoryData } from '../types/player';
+import { MatchHistoryData, PlayerMatchStats } from '../types/player';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
-interface Props {
-  data: MatchHistoryData;
+interface MatchHistoryProps {
+  data?: MatchHistoryData;
+  matches?: PlayerMatchStats[];
 }
 
-export const MatchHistory: React.FC<Props> = ({ data }) => {
+export const MatchHistory: React.FC<MatchHistoryProps> = ({ data, matches: directMatches }) => {
   const { t } = useTranslation();
-  const { matches, stats } = data;
+
+  // Tự động lấy danh sách trận từ data hoặc prop matches truyền trực tiếp
+  const matchList = data?.matches || directMatches || [];
+
+  if (matchList.length === 0) return null;
+
+  // Sử dụng stats có sẵn hoặc tự động tính toán nếu truyền trực tiếp danh sách matches
+  const stats = data?.stats || {
+    win_rate: Math.round(
+      (matchList.filter((m) => m.result === 'Victory').length / matchList.length) * 100
+    ),
+    avg_kd: Number(
+      (matchList.reduce((acc, m) => acc + m.kd_ratio, 0) / matchList.length).toFixed(2)
+    ),
+    headshot_pct: Math.round(
+      matchList.reduce((acc, m) => acc + m.headshot_percent, 0) / matchList.length
+    ),
+  };
 
   // Đảo ngược mảng trận đấu để vẽ biểu đồ theo thứ tự thời gian từ cũ tới mới
-  const chartData = [...matches].reverse().map((m) => ({
+  const chartData = [...matchList].reverse().map((m) => ({
     date: m.map,
     KD: m.kd_ratio,
     HS: m.headshot_percent,
@@ -57,7 +75,7 @@ export const MatchHistory: React.FC<Props> = ({ data }) => {
       {/* 3. Danh sách trận đấu */}
       <div className="space-y-3">
         <h3 className="text-lg font-bold text-white">{t('stats.recent_matches')}</h3>
-        {matches.map((match) => {
+        {matchList.map((match) => {
           const isWin = match.result === 'Victory';
           return (
             <div
@@ -74,11 +92,9 @@ export const MatchHistory: React.FC<Props> = ({ data }) => {
                 )}
                 <div>
                   <div className="flex items-center space-x-2">
-                    {/* Đưa Tên Agent lên làm Tiêu đề In đậm */}
                     <span className="font-bold text-white">{match.agent}</span>
                     <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300">{match.mode}</span>
                   </div>
-                  {/* Chuyển Tên Map + Ngày xuống dòng phụ */}
                   <p className="text-sm text-slate-400">{match.map} • {match.date}</p>
                 </div>
               </div>
