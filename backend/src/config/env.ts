@@ -10,6 +10,12 @@ const envSchema = z.object({
   PORT: z.string().default('5000'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
+
+  // 🟢 BỔ SUNG MONGO_URI VÀO ĐÂY
+  MONGO_URI: z.string({
+    required_error: '❌ MONGO_URI trong file .env không được để trống!',
+  }),
+
   VALORANT_API_BASE_URL: z.string().default('https://valorant-api.com/v1'),
   HENRIK_DEV_API_BASE_URL: z.string().default('https://api.henrikdev.xyz/valorant'),
   HENRIK_API_KEY: z.string().optional(),

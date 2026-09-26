@@ -77,6 +77,8 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ data, matches: direc
         <h3 className="text-lg font-bold text-white">{t('stats.recent_matches')}</h3>
         {matchList.map((match) => {
           const isWin = match.result === 'Victory';
+          const agentNameName = (match.agent || 'Jett').toLowerCase().replace(/[^a-z0-9]/g, '');
+
           return (
             <div
               key={match.match_id}
@@ -87,9 +89,19 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ data, matches: direc
               }`}
             >
               <div className="flex items-center space-x-4">
-                {match.agent_icon && (
-                  <img src={match.agent_icon} alt={match.agent} className="w-12 h-12 rounded-lg bg-slate-800 p-1" />
-                )}
+                {/* Ảnh Agent với cơ chế Tự động tải từ CDN nếu link gốc thiếu/lỗi */}
+                <img
+                  src={
+                    match.agent_icon ||
+                    `https://raw.githubusercontent.com/Henrik-3/valorant-api-docs/main/assets/agents/${agentNameName}.png`
+                  }
+                  alt={match.agent}
+                  className="w-12 h-12 rounded-lg bg-slate-800 object-cover p-1 border border-slate-700/60 flex-shrink-0"
+                  onError={(e) => {
+                    e.currentTarget.src = `https://raw.githubusercontent.com/Henrik-3/valorant-api-docs/main/assets/agents/${agentNameName}.png`;
+                  }}
+                />
+
                 <div>
                   <div className="flex items-center space-x-2">
                     <span className="font-bold text-white">{match.agent}</span>
@@ -121,3 +133,5 @@ export const MatchHistory: React.FC<MatchHistoryProps> = ({ data, matches: direc
     </div>
   );
 };
+
+export default MatchHistory;
